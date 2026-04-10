@@ -1,15 +1,26 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { ApiError, getJson } from '../lib/api'
-import type { ApiListResponse, Lesson, TextSample } from '../types/api'
+import { ApiError, getJson, postJson } from '../lib/api'
+import type {
+  ApiListResponse,
+  Lesson,
+  TextSample,
+  TypingCompletePayload,
+  TypingSessionResponseData,
+} from '../types/api'
 import { TypingPractice } from '../components/TypingPractice'
+import { useAuth } from '../context/AuthContext'
 
 export function LessonPage() {
   const { lessonId } = useParams<{ lessonId: string }>()
+  const { isAuthenticated } = useAuth()
   const [lesson, setLesson] = useState<Lesson | null>(null)
   const [passage, setPassage] = useState<string>('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
+  const [sessionMessage, setSessionMessage] = useState<string | null>(null)
+  const [sessionError, setSessionError] = useState<string | null>(null)
+  const sessionPostedRef = useRef(false)
 
   useEffect(() => {
     if (!lessonId) {
@@ -64,6 +75,53 @@ export function LessonPage() {
     }
   }, [lessonId])
 
+  useEffect(() => {
+    sessionPostedRef.current = false
+    setSessionMessage(null)
+    setSessionError(null)
+  }, [lessonId, passage])
+
+  const handleTypingComplete = useCallback(
+    async (p: TypingCompletePayload) => {
+      if (!isAuthenticated || !lessonId) return
+      if (sessionPostedRef.current) return
+      sessionPostedRef.current = true
+      setSessionError(null)
+      setSessionMessage(null)
+      try {
+        const res = await postJson<ApiListResponse<TypingSessionResponseData>>(
+          '/api/me/typing-sessions',
+          {
+            lessonId,
+            wpm: p.wpm,
+            accuracy: p.accuracy,
+            durationSeconds: p.durationSeconds,
+            charactersTyped: p.typedLength,
+            charactersCorrect: Math.max(0, p.typedLength - p.mistakes),
+          },
+        )
+        if (!res.success) {
+          setSessionError(res.message ?? 'Could not save session')
+          sessionPostedRef.current = false
+          return
+        }
+        if (res.data?.newBadges?.length) {
+          setSessionMessage(
+            `New badge${res.data.newBadges.length > 1 ? 's' : ''}: ${res.data.newBadges.map((b) => b.name).join(', ')}`,
+          )
+        } else {
+          setSessionMessage('Progress saved.')
+        }
+      } catch (e) {
+        sessionPostedRef.current = false
+        setSessionError(
+          e instanceof ApiError ? e.message : 'Could not save session',
+        )
+      }
+    },
+    [isAuthenticated, lessonId],
+  )
+
   if (loading) {
     return <p className="text-zinc-500">Loading lesson…</p>
   }
@@ -101,7 +159,21 @@ export function LessonPage() {
         key={`${lesson.id}-${passage.length}`}
         targetText={passage}
         title={lesson.text_sample?.title ?? undefined}
+        onComplete={isAuthenticated ? handleTypingComplete : undefined}
       />
+      {!isAuthenticated ? (
+        <p className="text-sm text-zinc-600 dark:text-zinc-500">
+          Log in to save progress and earn badges.
+        </p>
+      ) : null}
+      {sessionMessage ? (
+        <p className="text-sm text-emerald-600 dark:text-emerald-400">
+          {sessionMessage}
+        </p>
+      ) : null}
+      {sessionError ? (
+        <p className="text-sm text-red-600 dark:text-red-400">{sessionError}</p>
+      ) : null}
     </div>
   )
 }

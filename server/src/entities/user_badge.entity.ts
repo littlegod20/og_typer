@@ -6,9 +6,10 @@ import { Badge } from "./badge.entity";
 @Entity()
 export class UserBadge {
   @PrimaryGeneratedColumn("uuid")
-  id!: number;
+  id!: string;
 
   @ManyToOne(() => User, (user) => user.user_badges)
+  @JoinColumn({ name: "user_id" })
   user!: User;
 
   @ManyToOne(() => Badge, (badge) => badge.user_badges)

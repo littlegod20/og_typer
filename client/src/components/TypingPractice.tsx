@@ -1,16 +1,19 @@
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import type { TypingCompletePayload } from '../types/api'
 
 type TypingPracticeProps = {
   targetText: string
   title?: string
+  onComplete?: (payload: TypingCompletePayload) => void
 }
 
-export function TypingPractice({ targetText, title }: TypingPracticeProps) {
+export function TypingPractice({ targetText, title, onComplete }: TypingPracticeProps) {
   const [typed, setTyped] = useState('')
   const [startedAt, setStartedAt] = useState<number | null>(null)
   const [finishedAt, setFinishedAt] = useState<number | null>(null)
   const [mistakes, setMistakes] = useState(0)
   const areaRef = useRef<HTMLDivElement>(null)
+  const completeFiredRef = useRef(false)
 
   const complete = typed === targetText && targetText.length > 0
 
@@ -34,12 +37,38 @@ export function TypingPractice({ targetText, title }: TypingPracticeProps) {
       : null
 
   const reset = useCallback(() => {
+    completeFiredRef.current = false
     setTyped('')
     setStartedAt(null)
     setFinishedAt(null)
     setMistakes(0)
     areaRef.current?.focus()
   }, [])
+
+  useEffect(() => {
+    if (!complete) {
+      completeFiredRef.current = false
+      return
+    }
+    if (!onComplete || completeFiredRef.current) return
+    if (wpm == null || accuracy == null || elapsedSec == null) return
+    completeFiredRef.current = true
+    onComplete({
+      wpm,
+      accuracy,
+      durationSeconds: elapsedSec,
+      typedLength: typed.length,
+      mistakes,
+    })
+  }, [
+    complete,
+    onComplete,
+    wpm,
+    accuracy,
+    elapsedSec,
+    typed.length,
+    mistakes,
+  ])
 
   const onKeyDown = useCallback(
     (e: React.KeyboardEvent) => {

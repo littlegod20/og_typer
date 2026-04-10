@@ -57,3 +57,63 @@ export interface ApiErrorBody {
   success?: boolean
   errors?: Array<{ property: string; constraints?: Record<string, string> }>
 }
+
+export interface UserSettings {
+  id: string
+  theme: string
+  keyboard_sound: string
+  difficulty: string
+  words_per_minute_goal: string | null
+}
+
+export interface ProfileUser extends ApiUser {
+  user_settings?: UserSettings | null
+}
+
+export interface UserStatsSummary {
+  totalSessions: number
+  averageWpm: number
+  bestWpm: number
+  lessonsCompleted: number
+  totalPracticeSeconds: number
+}
+
+export interface Badge {
+  id: string
+  name: string
+  description: string
+  icon_url: string
+}
+
+export interface EarnedBadgeEntry {
+  date_earned: string
+  badge: Badge
+}
+
+export interface TypingSessionPayload {
+  lessonId: string
+  wpm: number
+  accuracy: number
+  durationSeconds: number
+  charactersTyped: number
+  charactersCorrect: number
+}
+
+export interface TypingSessionResponseData {
+  session: {
+    id: string
+    wpm: number
+    accuracy: number
+    total_duration: string
+    created_At: string
+  }
+  newBadges: Badge[]
+}
+
+export type TypingCompletePayload = {
+  wpm: number
+  accuracy: number
+  durationSeconds: number
+  typedLength: number
+  mistakes: number
+}

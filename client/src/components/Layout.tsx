@@ -2,20 +2,20 @@ import { Link, Outlet } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 const linkClass =
-  'text-zinc-300 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded px-1'
+  'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded px-1'
 const ctaClass =
-  'rounded-lg bg-violet-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-violet-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950'
+  'rounded-lg bg-violet-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-violet-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-zinc-950'
 
 export function Layout() {
   const { user, logout, isAuthenticated } = useAuth()
 
   return (
-    <div className="flex min-h-svh flex-col bg-zinc-950 text-zinc-100">
-      <header className="border-b border-zinc-800/80">
+    <div className="flex min-h-svh flex-col bg-zinc-100 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100">
+      <header className="border-b border-zinc-200 dark:border-zinc-800/80">
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-4 px-4 py-3">
           <Link
             to="/"
-            className="text-lg font-semibold tracking-tight text-violet-400 hover:text-violet-300"
+            className="text-lg font-semibold tracking-tight text-violet-600 hover:text-violet-500 dark:text-violet-400 dark:hover:text-violet-300"
           >
             OG Typer
           </Link>
@@ -25,7 +25,13 @@ export function Layout() {
             </Link>
             {isAuthenticated ? (
               <>
-                <span className="max-w-[12rem] truncate text-zinc-500" title={user?.email}>
+                <Link to="/profile" className={linkClass}>
+                  Profile
+                </Link>
+                <span
+                  className="max-w-[12rem] truncate text-zinc-500 dark:text-zinc-500"
+                  title={user?.email}
+                >
                   {user?.email}
                 </span>
                 <button type="button" onClick={logout} className={linkClass}>
@@ -48,7 +54,7 @@ export function Layout() {
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8">
         <Outlet />
       </main>
-      <footer className="border-t border-zinc-800/80 py-4 text-center text-xs text-zinc-500">
+      <footer className="border-t border-zinc-200 py-4 text-center text-xs text-zinc-500 dark:border-zinc-800/80">
         Practice typing with structured lessons.
       </footer>
     </div>

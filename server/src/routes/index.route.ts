@@ -5,6 +5,7 @@ import lesson_routes from "./lesson.routes"
 import badge_routes from "./badge.routes"
 import user_setting_routes from "./user_settings.routes"
 import error_logs_routes from './error_logs.routes'
+import me_routes from "./me.routes"
 
 const router = Router();
 
@@ -26,5 +27,7 @@ router.use('/badges', badge_routes)
 router.use('/user_setting', user_setting_routes)
 
 router.use('/error_logs', error_logs_routes)
+
+router.use("/me", me_routes)
 
 export default router;

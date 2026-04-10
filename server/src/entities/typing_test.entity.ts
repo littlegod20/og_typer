@@ -9,7 +9,7 @@ import { ErrorLog } from "./error_log.entity";
 export class TypingTest {
 
   @PrimaryGeneratedColumn("uuid")
-  id!: number;
+  id!: string;
 
   @ManyToOne(() => User, (user) => user.typing_tests)
   @JoinColumn({ name: "user_id" })
@@ -32,7 +32,7 @@ export class TypingTest {
   total_duration!: string;
 
   @Column("int")
-  characters_correct!: string;
+  characters_correct!: number;
 
   @Column("int")
   wpm!: number;

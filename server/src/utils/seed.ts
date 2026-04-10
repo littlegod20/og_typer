@@ -1,10 +1,11 @@
 import { DataSource } from 'typeorm';
 import { TextSample } from '../entities/text_sample.entity';
-import { textSampleSeeds, courseSeeds, lessonSeeds } from './constants';
+import { textSampleSeeds, courseSeeds, lessonSeeds, badgeSeeds } from './constants';
 import logger from '../config/logger';
 import { Course } from '../entities/course.entity';
 import { Lesson } from '../entities/lesson.entity';
 import { LessonService } from '../services/lesson.service';
+import { Badge } from '../entities/badge.entity';
 
 // Seeder function for text samples
 export async function seedTextSamples(dataSource: DataSource): Promise<void> {
@@ -61,6 +62,19 @@ export async function seedCourses(dataSource: DataSource): Promise<void> {
   } catch (error) {
     logger.error(`Error seeding courses... ${error}`)
   }
+}
+
+export async function seedBadges(dataSource: DataSource): Promise<void> {
+  const badgeRepository = dataSource.getRepository(Badge);
+  logger.info('Seeding badges...');
+  for (const seed of badgeSeeds) {
+    const existing = await badgeRepository.findOne({ where: { name: seed.name } });
+    if (!existing) {
+      await badgeRepository.save(badgeRepository.create(seed));
+      logger.info(`Created badge: ${seed.name}`);
+    }
+  }
+  logger.info('Badge seeding completed!');
 }
 
 export async function seedLessons(dataSource: DataSource) {

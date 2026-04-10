@@ -29,18 +29,35 @@ export class UserSettingsService {
     return await this.userSettingsRepository.save(setting)
   }
 
-  async update(id: string, userSettingData: UserSettings) {
-    const userSetting = await this.userSettingsRepository.update({
-      id: id
-    }, {
-      theme: userSettingData.theme,
-      keyboard_sound: userSettingData.keyboard_sound,
-      difficulty: userSettingData.difficulty,
-      words_per_minute_goal: userSettingData.words_per_minute_goal
-    })
+  async update(
+    id: string,
+    userSettingData: Partial<
+      Pick<
+        UserSettings,
+        "theme" | "keyboard_sound" | "difficulty" | "words_per_minute_goal"
+      >
+    >
+  ) {
+    const payload: Partial<
+      Pick<
+        UserSettings,
+        "theme" | "keyboard_sound" | "difficulty" | "words_per_minute_goal"
+      >
+    > = {};
+    if (userSettingData.theme !== undefined)
+      payload.theme = userSettingData.theme;
+    if (userSettingData.keyboard_sound !== undefined)
+      payload.keyboard_sound = userSettingData.keyboard_sound;
+    if (userSettingData.difficulty !== undefined)
+      payload.difficulty = userSettingData.difficulty;
+    if (userSettingData.words_per_minute_goal !== undefined)
+      payload.words_per_minute_goal = userSettingData.words_per_minute_goal;
 
+    if (Object.keys(payload).length > 0) {
+      await this.userSettingsRepository.update({ id }, payload);
+    }
 
-    return await this.userSettingsRepository.findOne({ where: { id } })
+    return await this.userSettingsRepository.findOne({ where: { id } });
   }
 
   async reset(id: string) {

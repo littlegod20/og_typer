@@ -272,6 +272,24 @@ export const textSampleSeeds = [
   }
 ];
 
+export const badgeSeeds = [
+  {
+    name: "First Steps",
+    description: "Complete your first lesson",
+    icon_url: "⭐",
+  },
+  {
+    name: "Dedicated",
+    description: "Complete 10 typing sessions",
+    icon_url: "🔥",
+  },
+  {
+    name: "Speed Demon",
+    description: "Reach 60+ WPM on a session",
+    icon_url: "⚡",
+  },
+];
+
 export const courseSeeds = [
   {
     name: "Beginner Typing Fundamentals",
