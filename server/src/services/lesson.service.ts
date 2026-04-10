@@ -69,9 +69,12 @@ export class LessonService {
   }
 
   async findLessonById(id: string) {
-    const lessonById = await this.lessonRepository.findOne({ where: { id } })
+    const lessonById = await this.lessonRepository.findOne({
+      where: { id },
+      relations: ["text_sample", "course", "prerequisite_lesson"],
+    });
 
-    return lessonById
+    return lessonById;
   }
 
   async add(lesson: CreateLessonDto) {

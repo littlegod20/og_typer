@@ -295,214 +295,192 @@ export const courseSeeds = [
   }
 ];
 
+/** Resolved at seed time via course name + text sample title (stable UUIDs). */
 export const lessonSeeds = [
   // BEGINNER COURSE LESSONS
   {
-    course_id: "086e6341-cb75-45ef-b471-45e74ef60166",
-    text_sample_id: "1d443774-9815-40f0-b8b2-99d55734350d",
-    prerequisite_lesson_id: null,
+    courseName: "Beginner Typing Fundamentals",
+    textSampleTitle: "Basic Home Row Keys",
     title: "Home Row Foundation",
-    description: "Master the home row keys (ASDF JKL;) with proper finger placement",
-    order_index: 1
+    description:
+      "Master the home row keys (ASDF JKL;) with proper finger placement",
+    order_index: 1,
   },
   {
-    course_id: "086e6341-cb75-45ef-b471-45e74ef60166",
-    text_sample_id: "258ddcf6-029a-48b7-a4d5-34f95924a9fa",
-    prerequisite_lesson_id: "lesson-beginner-1",
+    courseName: "Beginner Typing Fundamentals",
+    textSampleTitle: "Top Row Introduction",
     title: "Top Row Introduction",
     description: "Learn the QWER TYUI keys above the home row",
-    order_index: 2
+    order_index: 2,
   },
   {
-    course_id: "086e6341-cb75-45ef-b471-45e74ef60166",
-    text_sample_id: "4064a481-917d-4f0b-a513-a301a3ed433a",
-    prerequisite_lesson_id: "lesson-beginner-2",
+    courseName: "Beginner Typing Fundamentals",
+    textSampleTitle: "Bottom Row Practice",
     title: "Bottom Row Practice",
     description: "Practice the ZXCV BNM, keys below the home row",
-    order_index: 3
+    order_index: 3,
   },
   {
-    course_id: "086e6341-cb75-45ef-b471-45e74ef60166",
-    text_sample_id: "b766a8a2-b520-47fc-bbe4-14b84b774130",
-    prerequisite_lesson_id: "lesson-beginner-3",
+    courseName: "Beginner Typing Fundamentals",
+    textSampleTitle: "Simple Words",
     title: "Simple Word Practice",
     description: "Combine letters into common English words",
-    order_index: 4
+    order_index: 4,
   },
   {
-    course_id: "086e6341-cb75-45ef-b471-45e74ef60166",
-    text_sample_id: "cf52ea5a-94ea-4880-93d5-6def66685ad9",
-    prerequisite_lesson_id: "lesson-beginner-4",
+    courseName: "Beginner Typing Fundamentals",
+    textSampleTitle: "Common Letter Combinations",
     title: "Common Suffixes",
     description: "Practice common letter combinations and word endings",
-    order_index: 5
+    order_index: 5,
   },
 
   // INTERMEDIATE COURSE LESSONS
   {
-    course_id: "532b0577-6509-4d4a-b0e3-ed3b1f81b595",
-    text_sample_id: "6bce05ab-a740-464c-9320-588dd14ea9a6",
-    prerequisite_lesson_id: null,
+    courseName: "Intermediate Speed Building",
+    textSampleTitle: "Numbers and Symbols",
     title: "Numbers & Symbols",
     description: "Master numbers and special characters on the keyboard",
-    order_index: 1
+    order_index: 1,
   },
   {
-    course_id: "532b0577-6509-4d4a-b0e3-ed3b1f81b595",
-    text_sample_id: "98ce1982-438b-406f-8b81-06220817778d",
-    prerequisite_lesson_id: "lesson-intermediate-1",
+    courseName: "Intermediate Speed Building",
+    textSampleTitle: "Capitalization Practice",
     title: "Capitalization Skills",
     description: "Practice proper capitalization and shift key usage",
-    order_index: 2
+    order_index: 2,
   },
   {
-    course_id: "532b0577-6509-4d4a-b0e3-ed3b1f81b595",
-    text_sample_id: "a3e8a8de-a1bf-42a2-ad61-ff62190612ed",
-    prerequisite_lesson_id: "lesson-intermediate-2",
+    courseName: "Intermediate Speed Building",
+    textSampleTitle: "Common Sentences",
     title: "Sentence Practice",
     description: "Type complete sentences with proper punctuation",
-    order_index: 3
+    order_index: 3,
   },
   {
-    course_id: "532b0577-6509-4d4a-b0e3-ed3b1f81b595",
-    text_sample_id: "c87849e0-7d57-4304-975f-3d9314e3a532",
-    prerequisite_lesson_id: "lesson-intermediate-3",
+    courseName: "Intermediate Speed Building",
+    textSampleTitle: "Speed Building Words",
     title: "Speed Building",
     description: "Increase your speed with common word patterns",
-    order_index: 4
+    order_index: 4,
   },
   {
-    course_id: "532b0577-6509-4d4a-b0e3-ed3b1f81b595",
-    text_sample_id: "d1617507-bc2d-44b3-a4f5-5d5be796fd81",
-    prerequisite_lesson_id: "lesson-intermediate-4",
+    courseName: "Intermediate Speed Building",
+    textSampleTitle: "Technical Terms",
     title: "Technical Vocabulary",
     description: "Practice typing common programming and technical terms",
-    order_index: 5
+    order_index: 5,
   },
 
   // ADVANCED COURSE LESSONS
   {
-    course_id: "148351fc-9790-4e1a-9004-c090e98b921f",
-    text_sample_id: "6437fa92-5ba3-4531-b676-3da7952e1e89",
-    prerequisite_lesson_id: null,
+    courseName: "Advanced Technical Typing",
+    textSampleTitle: "Complex Punctuation",
     title: "Advanced Punctuation",
     description: "Master complex punctuation and special characters",
-    order_index: 1
+    order_index: 1,
   },
   {
-    course_id: "148351fc-9790-4e1a-9004-c090e98b921f",
-    text_sample_id: "a5b96696-0f92-47cd-8b8c-592fc3bdf978",
-    prerequisite_lesson_id: "lesson-advanced-1",
+    courseName: "Advanced Technical Typing",
+    textSampleTitle: "Mixed Case Challenge",
     title: "Mixed Case Challenge",
     description: "Practice with technical acronyms and mixed capitalization",
-    order_index: 2
+    order_index: 2,
   },
   {
-    course_id: "148351fc-9790-4e1a-9004-c090e98b921f",
-    text_sample_id: "a5b96696-0f92-47cd-8b8c-592fc3bdf978",
-    prerequisite_lesson_id: "lesson-advanced-2",
+    courseName: "Advanced Technical Typing",
+    textSampleTitle: "Code Snippets",
     title: "Code Typing Practice",
-    description: "Type actual code snippets to build programming typing skills",
-    order_index: 3
+    description:
+      "Type actual code snippets to build programming typing skills",
+    order_index: 3,
   },
   {
-    course_id: "148351fc-9790-4e1a-9004-c090e98b921f",
-    text_sample_id: "a5b96696-0f92-47cd-8b8c-592fc3bdf978",
-    prerequisite_lesson_id: "lesson-advanced-3",
+    courseName: "Advanced Technical Typing",
+    textSampleTitle: "Special Characters",
     title: "Special Characters Mastery",
     description: "Practice with extended character sets and symbols",
-    order_index: 4
+    order_index: 4,
   },
 
   // GAMES COURSE LESSONS
   {
-    course_id: "ca6405b8-07f9-4556-a64c-48584f0f83fa",
-    text_sample_id: "59fea96f-f58a-420b-b495-55e1e3aeeb44",
-    prerequisite_lesson_id: null,
+    courseName: "Typing Games & Challenges",
+    textSampleTitle: "Animal Names Speed Test",
     title: "Animal Kingdom Challenge",
     description: "Fun typing game with animal names",
-    order_index: 1
+    order_index: 1,
   },
   {
-    course_id: "ca6405b8-07f9-4556-a64c-48584f0f83fa",
-    text_sample_id: "77bbc057-a48f-4328-833d-88e4217c818e",
-    prerequisite_lesson_id: "lesson-game-1",
+    courseName: "Typing Games & Challenges",
+    textSampleTitle: "Color Rush",
     title: "Color Rush",
     description: "Type color names as fast as you can",
-    order_index: 2
+    order_index: 2,
   },
   {
-    course_id: "ca6405b8-07f9-4556-a64c-48584f0f83fa",
-    text_sample_id: "1e6c8f73-1a15-4b03-92a9-6e9e0805af31",
-    prerequisite_lesson_id: "lesson-game-2",
+    courseName: "Typing Games & Challenges",
+    textSampleTitle: "Food Challenge",
     title: "Food Challenge",
     description: "Practice with food-related vocabulary",
-    order_index: 3
+    order_index: 3,
   },
   {
-    course_id: "ca6405b8-07f9-4556-a64c-48584f0f83fa",
-    text_sample_id: "5ce63fd7-a071-47c9-a36e-822a4247a634",
-    prerequisite_lesson_id: "lesson-game-3",
+    courseName: "Typing Games & Challenges",
+    textSampleTitle: "Geography Quiz",
     title: "Geography Quiz",
     description: "Learn geography while practicing typing",
-    order_index: 4
+    order_index: 4,
   },
   {
-    course_id: "ca6405b8-07f9-4556-a64c-48584f0f83fa",
-    text_sample_id: "11367ee0-4886-434c-8b48-efbf38e3f027",
-    prerequisite_lesson_id: "lesson-game-4",
+    courseName: "Typing Games & Challenges",
+    textSampleTitle: "Science Terms",
     title: "Science Terminology",
     description: "Challenge yourself with scientific terms",
-    order_index: 5
+    order_index: 5,
   },
 
   // MULTILINGUAL COURSE LESSONS
   {
-    course_id: "7f8ba912-c757-4d38-bb6b-0337c60ed54a",
-    text_sample_id: "f5a6d05d-7069-4219-90ba-67a3bfe3ed4a",
-    prerequisite_lesson_id: null,
+    courseName: "Multilingual Practice",
+    textSampleTitle: "Mots de Base Français",
     title: "French Basics",
     description: "Practice typing basic French vocabulary",
-    order_index: 1
+    order_index: 1,
   },
   {
-    course_id: "7f8ba912-c757-4d38-bb6b-0337c60ed54a",
-    text_sample_id: "a590706e-0038-4caf-8a80-63a68f2ee91d",
-    prerequisite_lesson_id: "lesson-lang-1",
+    courseName: "Multilingual Practice",
+    textSampleTitle: "Citation Française",
     title: "French Quote Practice",
     description: "Type a beautiful French quotation",
-    order_index: 2
+    order_index: 2,
   },
   {
-    course_id: "7f8ba912-c757-4d38-bb6b-0337c60ed54a",
-    text_sample_id: "e856a5eb-76e6-46cf-9f07-451c2d03ac62",
-    prerequisite_lesson_id: "lesson-lang-2",
+    courseName: "Multilingual Practice",
+    textSampleTitle: "Palabras Básicas Español",
     title: "Spanish Basics",
     description: "Practice typing basic Spanish vocabulary",
-    order_index: 3
+    order_index: 3,
   },
   {
-    course_id: "7f8ba912-c757-4d38-bb6b-0337c60ed54a",
-    text_sample_id: "2dee0d28-6baa-4edd-9add-0496f5e5e8da",
-    prerequisite_lesson_id: "lesson-lang-3",
+    courseName: "Multilingual Practice",
+    textSampleTitle: "Cita Española",
     title: "Spanish Quote Practice",
     description: "Type a classic Spanish literary quote",
-    order_index: 4
+    order_index: 4,
   },
   {
-    course_id: "7f8ba912-c757-4d38-bb6b-0337c60ed54a",
-    text_sample_id: "b766a8a2-b520-47fc-bbe4-14b84b774130",
-    prerequisite_lesson_id: "lesson-lang-4",
+    courseName: "Multilingual Practice",
+    textSampleTitle: "Deutsche Grundwörter",
     title: "German Basics",
     description: "Practice typing basic German vocabulary",
-    order_index: 5
+    order_index: 5,
   },
   {
-    course_id: "7f8ba912-c757-4d38-bb6b-0337c60ed54a",
-    text_sample_id: "c6fb0e72-e4ec-45ad-a2a8-5f46ae6567ae",
-    prerequisite_lesson_id: "lesson-lang-5",
+    courseName: "Multilingual Practice",
+    textSampleTitle: "Deutsches Zitat",
     title: "German Quote Practice",
     description: "Type a famous German quotation",
-    order_index: 6
-  }
-];
+    order_index: 6,
+  },
+] as const;

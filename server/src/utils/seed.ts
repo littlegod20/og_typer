@@ -1,4 +1,4 @@
-import { DataSource, LessThan, MoreThan } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { TextSample } from '../entities/text_sample.entity';
 import { textSampleSeeds, courseSeeds, lessonSeeds } from './constants';
 import logger from '../config/logger';
@@ -68,35 +68,59 @@ export async function seedLessons(dataSource: DataSource) {
   const courseRepository = dataSource.getRepository(Course)
   const textSampleRepository = dataSource.getRepository(TextSample)
 
-  const lessonService = new LessonService(lessonRepository, courseRepository, textSampleRepository)
+  const lessonService = new LessonService(
+    lessonRepository,
+    courseRepository,
+    textSampleRepository,
+  )
 
-  logger.info("Seeding Lesson data...")
+  logger.info('Seeding Lesson data...')
 
   for (const seedData of lessonSeeds) {
     const existingLesson = await lessonRepository.findOne({
-      where: { title: seedData.title }
-    });
+      where: { title: seedData.title },
+    })
 
-    if (!existingLesson) {
+    if (existingLesson) continue
 
-      const findPrerequisiteLesson = await lessonRepository.findOne({
+    const course = await courseRepository.findOne({
+      where: { name: seedData.courseName },
+    })
+    const textSample = await textSampleRepository.findOne({
+      where: { title: seedData.textSampleTitle },
+    })
+
+    if (!course || !textSample) {
+      logger.warn(
+        `Skipping lesson "${seedData.title}": course "${seedData.courseName}" or text sample "${seedData.textSampleTitle}" not found`,
+      )
+      continue
+    }
+
+    let prerequisiteLessonId: string | null = null
+    if (seedData.order_index > 1) {
+      const previous = await lessonRepository.findOne({
         where: {
-          course: { id: seedData.course_id },
-          order_index: LessThan(seedData.order_index)
-        }
+          course: { id: course.id },
+          order_index: seedData.order_index - 1,
+        },
       })
+      prerequisiteLessonId = previous?.id ?? null
+    }
 
-      if (!findPrerequisiteLesson) {
-        seedData["prerequisite_lesson_id"] = null
-      } else {
-        seedData["prerequisite_lesson_id"] = findPrerequisiteLesson.id
-      }
-
-      await lessonService.add(seedData);
-      logger.info(`Created lesson: ${seedData.title}`);
-    } else {
-      continue;
+    try {
+      await lessonService.add({
+        course_id: course.id,
+        text_sample_id: textSample.id,
+        prerequisite_lesson_id: prerequisiteLessonId,
+        title: seedData.title,
+        description: seedData.description,
+        order_index: seedData.order_index,
+      })
+      logger.info(`Created lesson: ${seedData.title}`)
+    } catch (err) {
+      logger.error(`Failed to seed lesson "${seedData.title}": ${err}`)
     }
   }
-  logger.info('Lessons seeding completed!');
+  logger.info('Lessons seeding completed!')
 }

@@ -7,8 +7,7 @@ import app from "./app";
 const startServer = async () => {
   try {
     logger.info("Initializing database connection...");
-    // database initialiazation
-    initializeDatabase();
+    await initializeDatabase();
 
     app.listen(appConfig.port, () => {
       logger.info(

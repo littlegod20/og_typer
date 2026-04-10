@@ -10,8 +10,9 @@ import { appConfig } from "./app.config";
 
 config();
 
-
-const userRepository = AppDataSource.getRepository(User);
+function userRepository() {
+  return AppDataSource.getRepository(User);
+}
 
 // local strategy
 passport.use(
@@ -22,7 +23,7 @@ passport.use(
     },
     async (email, password, done) => {
       try {
-        const user = await userRepository.findOne({ where: { email } });
+        const user = await userRepository().findOne({ where: { email } });
         if (!user) return done(null, false, { message: "Incorrect email." });
 
         const isValidPassword = await bcrypt.compare(password, user.password);
@@ -49,8 +50,11 @@ passport.use(
     async (jwtPayload, done) => {
       console.log("jwtPayload:", jwtPayload);
       try {
-        const user = await userRepository.findOne({
-          where: { id: jwtPayload.id },
+        const id =
+          (jwtPayload as { userId?: string; id?: string }).userId ??
+          (jwtPayload as { id?: string }).id;
+        const user = await userRepository().findOne({
+          where: { id },
         });
         if (user) {
           return done(null, user);
@@ -63,42 +67,45 @@ passport.use(
   )
 );
 
-// google strategy
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: appConfig.googleCred.clientId!,
-      clientSecret: appConfig.googleCred.clientSecret!,
-      callbackURL: "/auth/google/callback",
-    },
-    async (accessToken, refreshToken, profile, done) => {
-      try {
-        const email = profile.emails?.[0].value;
-        const domain = email?.split("@")[1];
+// google strategy (only if OAuth credentials are configured)
+if (appConfig.googleCred.clientId && appConfig.googleCred.clientSecret) {
+  passport.use(
+    new GoogleStrategy(
+      {
+        clientID: appConfig.googleCred.clientId,
+        clientSecret: appConfig.googleCred.clientSecret,
+        callbackURL: "/auth/google/callback",
+      },
+      async (accessToken, refreshToken, profile, done) => {
+        try {
+          const email = profile.emails?.[0].value;
+          const domain = email?.split("@")[1];
 
-        if (domain !== "gmail.com") {
-          return done(null, false, {
-            message: "Access restricted to @gmail.com accounts only",
-          });
-        }
+          if (domain !== "gmail.com") {
+            return done(null, false, {
+              message: "Access restricted to @gmail.com accounts only",
+            });
+          }
 
-        let user = await userRepository.findOne({
-          where: { email: email },
-        });
-
-        if (!user) {
-          user = userRepository.create({
-            email: email,
-            username: profile.displayName,
+          const repo = userRepository();
+          let user = await repo.findOne({
+            where: { email: email },
           });
 
-          await userRepository.save(user);
-        }
+          if (!user) {
+            user = repo.create({
+              email: email,
+              username: profile.displayName,
+            });
 
-        return done(null, user);
-      } catch (error) {
-        return done(error);
+            await repo.save(user);
+          }
+
+          return done(null, user);
+        } catch (error) {
+          return done(error);
+        }
       }
-    }
-  )
-);
+    )
+  );
+}
