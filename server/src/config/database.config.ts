@@ -1,3 +1,4 @@
+import path from "path";
 import { DataSource } from "typeorm";
 import { config } from "dotenv";
 import logger from "./logger";
@@ -5,19 +6,33 @@ import { seedBadges, seedCourses, seedLessons, seedTextSamples } from "../utils/
 
 config();
 
-export const AppDataSource = new DataSource({
-  type: "postgres",
-  host: process.env.DB_HOST ?? "localhost",
-  port: parseInt(process.env.DB_PORT ?? "5432"),
-  username: process.env.DB_USER ?? "postgres",
-  password: process.env.DB_PASSWORD ?? "password",
-  database: process.env.DB_NAME ?? "postgres",
+const entityExt = process.env.NODE_ENV === "production" ? "js" : "ts";
+const entitiesGlob = path.join(__dirname, "..", "entities", `**/*.${entityExt}`);
+
+const baseOptions = {
+  type: "postgres" as const,
   synchronize: true,
   logging: false,
-  entities: ["src/entities/**/*.ts"],
-  migrations: ["src/migration/**/*.ts"],
-  subscribers: [],
-});
+  entities: [entitiesGlob],
+  migrations: [],
+  subscribers: [] as never[],
+};
+
+export const AppDataSource = new DataSource(
+  process.env.DATABASE_URL
+    ? {
+        ...baseOptions,
+        url: process.env.DATABASE_URL,
+      }
+    : {
+        ...baseOptions,
+        host: process.env.DB_HOST ?? "localhost",
+        port: parseInt(process.env.DB_PORT ?? "5432", 10),
+        username: process.env.DB_USER ?? "postgres",
+        password: process.env.DB_PASSWORD ?? "password",
+        database: process.env.DB_NAME ?? "postgres",
+      }
+);
 
 export const initializeDatabase = async (): Promise<void> => {
   try {
